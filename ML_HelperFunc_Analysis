@@ -17,3 +17,20 @@ def check_df(dataframe, head=5):
     print(dataframe.describe([0, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1]).T)
     
 check_df(df)
+
+#2
+import seaborn as sns
+sns.set(style='darkgrid',
+        palette='Set2',
+        font_scale=1,
+        font='calibri',
+        rc={'figure.figsize':(8,6), "legend.fontsize": 14})
+
+sns.set_context("paper", rc={
+    "lines.linewidth": 1.5,
+    "axes.labelsize": 14,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12
+})
+
+sns.set_style({'grid.color': '.95', 'axes.edgecolor': '.3'})
