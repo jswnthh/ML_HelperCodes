@@ -1,3 +1,4 @@
+#1
 def check_df(dataframe, head=5):
     print(" SHAPE ".center(70,'-'))
     print('Rows: {}'.format(dataframe.shape[0]))
