@@ -1,0 +1,18 @@
+def check_df(dataframe, head=5):
+    print(" SHAPE ".center(70,'-'))
+    print('Rows: {}'.format(dataframe.shape[0]))
+    print('Columns: {}'.format(dataframe.shape[1]))
+    print(" TYPES ".center(70,'-'))
+    print(dataframe.dtypes)
+    print(" HEAD ".center(70,'-'))
+    print(dataframe.head(head))
+    print(" TAIL ".center(70,'-'))
+    print(dataframe.tail(head))
+    print(" MISSING VALUES ".center(70,'-'))
+    print(dataframe.isnull().sum())
+    print(" DUPLICATED VALUES ".center(70,'-'))
+    print(dataframe.duplicated().sum())
+    print(" DESCRIBE ".center(70,'-'))
+    print(dataframe.describe([0, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1]).T)
+    
+check_df(df)
