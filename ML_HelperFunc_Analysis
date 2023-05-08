@@ -34,3 +34,18 @@ sns.set_context("paper", rc={
 })
 
 sns.set_style({'grid.color': '.95', 'axes.edgecolor': '.3'})
+
+#3
+def separate_num_cat(df):
+    numerical_values = []
+    categorical_values = []
+    
+    for i in df.columns:
+        if df[i].dtype == 'object':
+            categorical_values.append(i)
+        else:
+            numerical_values.append(i)
+    
+    print("Numerical Values:", ', '.join(numerical_values))
+    print("\n")
+    print("Categorical Values:", ', '.join(categorical_values))
