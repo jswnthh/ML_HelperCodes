@@ -1,4 +1,4 @@
-#1
+#1 
 def check_df(dataframe, head=5):
     print(" SHAPE ".center(70,'-'))
     print('Rows: {}'.format(dataframe.shape[0]))
@@ -18,7 +18,7 @@ def check_df(dataframe, head=5):
     
 check_df(df)
 
-#2
+#2 
 import seaborn as sns
 sns.set(style='darkgrid',
         palette='Set2',
@@ -35,7 +35,8 @@ sns.set_context("paper", rc={
 
 sns.set_style({'grid.color': '.95', 'axes.edgecolor': '.3'})
 
-#3
+#3 SEPARATE COLUMS AS NUMERICAL AND CATEGORICAL
+-----------------------------------------------
 def separate_num_cat(df):
     numerical_values = []
     categorical_values = []
@@ -49,3 +50,56 @@ def separate_num_cat(df):
     print("Numerical Values:", ', '.join(numerical_values))
     print("\n")
     print("Categorical Values:", ', '.join(categorical_values))
+    
+    #4 DOWNCASTING DATATYPE
+    -----------------------
+    def reduce_mem_usage(df):
+    """
+    Iterate through all the columns of a dataframe and modify the data type
+    to reduce memory usage.
+    """
+    # Calculate the initial memory usage of the DataFrame
+    start_mem = df.memory_usage().sum() / 1024**2
+    print('Memory usage of the dataframe is {:.2f} MB'.format(start_mem))
+    
+    # Iterate through each column of the DataFrame
+    for column in df.columns:
+        # Get the current data type of the column
+        col_type = df[column].dtype
+        
+        # Check if the column is not an object (i.e., numeric)
+        if col_type != object:
+            # Get the minimum and maximum values of the column
+            c_min = df[column].min()
+            c_max = df[column].max()
+            
+            # Check if the data type is integer
+            if str(col_type)[:3] == 'int':
+                # Downcast the column to the smallest integer type if its values are within the range
+                if c_min > np.iinfo(np.int8).min and c_max < np.iinfo(np.int8).max:
+                    df[column] = df[column].astype(np.int8)
+                elif c_min > np.iinfo(np.int16).min and c_max < np.iinfo(np.int16).max:
+                    df[column] = df[column].astype(np.int16)
+                elif c_min > np.iinfo(np.int32).min and c_max < np.iinfo(np.int32).max:
+                    df[column] = df[column].astype(np.int32)
+                elif c_min > np.iinfo(np.int64).min and c_max < np.iinfo(np.int64).max:
+                    df[column] = df[column].astype(np.int64)
+            # Check if the data type is floating-point
+            else:
+                # Downcast the column to the smallest floating-point type if its values are within the range
+                if c_min > np.finfo(np.float16).min and c_max < np.finfo(np.float16).max:
+                    df[column] = df[column].astype(np.float16)
+                elif c_min > np.finfo(np.float32).min and c_max < np.finfo(np.float32).max:
+                    df[column] = df[column].astype(np.float32)
+                else:
+                    df[column] = df[column].astype(np.float64)
+        # Convert object columns to categorical type
+        else:
+            df[column] = df[column].astype('category')
+
+    # Calculate the final memory usage of the DataFrame
+    end_mem = df.memory_usage().sum() / 1024**2
+    print('Memory usage after optimization is: {:.2f} MB'.format(end_mem))
+    print('Decreased by {:.1f}%'.format(100 * (start_mem - end_mem) / start_mem))
+    
+    return df
