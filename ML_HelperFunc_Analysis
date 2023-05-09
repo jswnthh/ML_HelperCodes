@@ -139,4 +139,5 @@ def plot(data, plot_type, *features):
 
     plt.tight_layout()
     plt.show()
+    
 
