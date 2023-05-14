@@ -140,4 +140,16 @@ def plot(data, plot_type, *features):
     plt.tight_layout()
     plt.show()
     
+    
+#6 RECEIVER OPERATING CHARATERIC CURVE FOR GIVEN MODEL'S PREDICTION
+-------------------------------------------------------------------
+
+
+def test_roc(model, data, labels):
+    if hasattr(model, "decision_function"):
+        predictions = model.decision_function(data)
+    else:
+        predictions = model.predict_proba(data)[:,1]
+    fpr, tpr, _ = sklearn.metrics.roc_curve(labels, predictions)
+    return fpr, tpr
 
