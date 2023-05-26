@@ -152,4 +152,58 @@ def test_roc(model, data, labels):
         predictions = model.predict_proba(data)[:,1]
     fpr, tpr, _ = sklearn.metrics.roc_curve(labels, predictions)
     return fpr, tpr
+    
+    
+#7 INERTIA GRAPH AND HEATMAP
+---------------------------------------
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+
+# Generate sample data (you can replace this with your own data)
+X = df["Interest_Rate"].array.reshape(-1, 1)
+
+# Define the range of k values to test
+k_values = range(1, 10)
+
+# Initialize an empty list to store the inertia values
+inertia_values = []
+
+# Perform K-means clustering for each value of k
+for k in k_values:
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    kmeans.fit(X)
+    inertia_values.append(kmeans.inertia_)
+
+# Set up the figure with two subplots
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# Plot the inertia graph on the first subplot
+axes[0].plot(k_values, inertia_values, marker='o')
+axes[0].set_xlabel('Number of Clusters (k)')
+axes[0].set_ylabel('Inertia')
+axes[0].set_title('Inertia Graph')
+
+# Perform K-means clustering with the optimal k value
+optimal_k = 3  # Replace with your optimal k value
+kmeans = KMeans(n_clusters=optimal_k, random_state=42)
+y_kmeans = kmeans.fit_predict(X)
+
+# Plot the clustermap on the second subplot
+cluster_labels = kmeans.labels_
+cluster_data = pd.DataFrame({'Interest Rate': df['Interest_Rate'], 'Cluster Label': cluster_labels})
+clustermap_data = cluster_data.pivot_table(index='Cluster Label', columns='Interest Rate', aggfunc='size', fill_value=0)
+sns.heatmap(clustermap_data, cmap='Blues', ax=axes[1])
+axes[1].set_xlabel('Interest Rate')
+axes[1].set_ylabel('Cluster Label')
+axes[1].set_title('Cluster Map')
+
+# Adjust the spacing between subplots
+plt.tight_layout()
+
+# Display the plot
+plt.show()
+# Adjust the spacing between subplots
+plt.tight_layout()
+
+# Display the plotplt.show()
 
