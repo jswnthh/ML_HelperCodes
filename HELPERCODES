@@ -38,18 +38,29 @@ sns.set_style({'grid.color': '.95', 'axes.edgecolor': '.3'})
 #3 SEPARATE COLUMS AS NUMERICAL AND CATEGORICAL
 -----------------------------------------------
 def separate_num_cat(df):
-    numerical_values = []
-    categorical_values = []
+    numerical_values = {}
+    categorical_values = {}
     
-    for i in df.columns:
-        if df[i].dtype == 'object':
-            categorical_values.append(i)
+    for column in df.columns:
+        if df[column].dtype == 'object':
+            categorical_values[column] = df[column].dtype
         else:
-            numerical_values.append(i)
+            numerical_values[column] = df[column].dtype
     
-    print("Numerical Values:", ', '.join(numerical_values))
+    print("-" * 70)
+    print(" Numerical Values ".center(70))
+    print("-" * 70)
     print("\n")
-    print("Categorical Values:", ', '.join(categorical_values))
+    for column, dtype in numerical_values.items():
+        print(f"{column}: {dtype}")
+    print("\n")
+    print("-" * 70)
+    print(" Categorical Values ".center(70))
+    print("-" * 70)
+    print("\n")
+    for column, dtype in categorical_values.items():
+        print(f"{column}: {dtype}")
+
     
     #4 DOWNCASTING DATATYPE
     -----------------------
